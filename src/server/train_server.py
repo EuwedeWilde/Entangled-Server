@@ -154,6 +154,12 @@ class TrainServer:
         self._control = TrainerControl()
         self._msg_queue: "queue.Queue[dict]" = queue.Queue()
 
+        # Single-session ownership. The trainer is shared, so only one client
+        # may drive it at a time. Whoever starts training becomes the owner;
+        # everyone else gets a polite "busy" reply until the owner is released
+        # (training finishes/errors, owner resets, or owner disconnects).
+        self._owner = None
+
     # ----- broadcasting -----------------------------------------------------
 
     def _post_from_thread(self, msg: dict) -> None:
@@ -174,8 +180,16 @@ class TrainServer:
             if not self._clients:
                 continue
             payload = json.dumps(msg)
+            # Training updates belong to the client that started the session.
+            # If there's an owner, send only to them so bystanders don't see
+            # someone else's progress. Messages with no owner (or if the owner
+            # has gone) fall back to broadcasting to everyone.
+            if self._owner is not None and self._owner in self._clients:
+                targets = [self._owner]
+            else:
+                targets = list(self._clients)
             dead = []
-            for ws in list(self._clients):
+            for ws in targets:
                 try:
                     await ws.send(payload)
                 except Exception:
@@ -200,16 +214,41 @@ class TrainServer:
             traceback.print_exc()
         finally:
             self._clients.discard(ws)
+            # If the owner disconnected, free the session. If they were
+            # mid-training, ask the run to stop so the box isn't tied up.
+            if self._owner is ws:
+                self._owner = None
+                if (self._trainer_thread is not None
+                        and self._trainer_thread.is_alive()):
+                    self._control.stop_requested = True
+                    self._control.pause_event.set()
 
     async def _dispatch(self, ws, raw):
         try:
             msg = json.loads(raw)
             kind = msg.get("type")
+
+            # Gate the actions that drive the shared trainer. Only the current
+            # owner may run them; if someone else holds the session, reply busy.
+            session_actions = ("configure", "start", "pause", "resume",
+                               "reset", "generate")
+            if (kind in session_actions
+                    and self._owner is not None
+                    and self._owner in self._clients
+                    and self._owner is not ws):
+                await ws.send(json.dumps({
+                    "type": "status", "phase": "busy",
+                    "msg": "Someone else is training right now — "
+                           "please try again in a bit."}))
+                return
+
             if kind == "configure":
+                self._claim(ws)
                 self._configure(msg)
                 await ws.send(json.dumps({"type": "status", "phase": "idle",
                                           "msg": "configured"}))
             elif kind == "start":
+                self._claim(ws)
                 self._start_training()
             elif kind == "pause":
                 self._control.pause_requested = True
@@ -223,6 +262,7 @@ class TrainServer:
                                           "msg": "resumed"}))
             elif kind == "reset":
                 self._reset_model()
+                self._owner = None
                 await ws.send(json.dumps({"type": "status", "phase": "idle",
                                           "msg": "model reset"}))
             elif kind == "generate":
@@ -236,6 +276,11 @@ class TrainServer:
             await ws.send(json.dumps({
                 "type": "error", "msg": f"{type(e).__name__}: {e}"
             }))
+
+    def _claim(self, ws) -> None:
+        """Mark this client as the session owner if no one else holds it."""
+        if self._owner is None or self._owner not in self._clients:
+            self._owner = ws
 
     # ----- training control -------------------------------------------------
 
@@ -335,6 +380,11 @@ class TrainServer:
             traceback.print_exc()
             self._post_from_thread({"type": "status", "phase": "error",
                                     "msg": f"{type(e).__name__}: {e}"})
+        finally:
+            # Training is over (done, stopped, or errored) — free the session
+            # so the next person can train. The trained model itself is kept
+            # until someone resets, so the owner can still generate from it.
+            self._owner = None
 
     def _reset_model(self) -> None:
         self._control.stop_requested = True

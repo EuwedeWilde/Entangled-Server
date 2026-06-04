@@ -120,6 +120,13 @@
         break;
       case "status":
         if (msg.phase === "done") onTrainingDone();
+        else if (msg.phase === "busy") {
+          setStatus("busy", "busy");
+          $trainHint.textContent = msg.msg ||
+            "Someone else is training right now — please try again in a bit.";
+          $trainHint.className = "easy__hint easy__hint--err";
+          $trainBtn.disabled = false;
+        }
         else if (msg.phase === "error") {
           setStatus("err", msg.msg || "error");
           $trainHint.textContent = "Training failed: " + (msg.msg || "unknown");
