@@ -25,10 +25,11 @@ trap cleanup EXIT INT TERM
 
 echo "Starting static website on port ${STATIC_PORT}..."
 # Port 80 needs root; use sudo only if not already root.
+# serve_static.py only serves web assets (never .venv, server/, .git, dotfiles).
 if [ "$(id -u)" -ne 0 ] && [ "$STATIC_PORT" -lt 1024 ]; then
-  sudo "$PY" -m http.server "$STATIC_PORT" &
+  sudo "$PY" serve_static.py "$STATIC_PORT" &
 else
-  "$PY" -m http.server "$STATIC_PORT" &
+  "$PY" serve_static.py "$STATIC_PORT" &
 fi
 STATIC_PID=$!
 
