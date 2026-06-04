@@ -39,6 +39,7 @@ import queue
 import sys
 import threading
 import traceback
+from collections import OrderedDict
 from pathlib import Path
 from typing import Optional
 
@@ -160,6 +161,16 @@ class TrainServer:
         # (training finishes/errors, owner resets, or owner disconnects).
         self._owner = None
 
+        # Per-user trained models, keyed by a session id the browser sends.
+        # Training is still one-at-a-time (CPU-bound), but each user's trained
+        # model is kept here so one person training doesn't destroy another
+        # person's result — they can still generate from their own model.
+        # In-memory only (lost on restart), capped to MAX_SESSIONS (oldest
+        # evicted) so a 6 GB box can't be exhausted by parked models.
+        # Each entry: {"model", "vocab_sig", "env_cfg", "total_timesteps"}.
+        self._sessions: "OrderedDict[str, dict]" = OrderedDict()
+        self.MAX_SESSIONS = 5
+
     # ----- broadcasting -----------------------------------------------------
 
     def _post_from_thread(self, msg: dict) -> None:
@@ -227,6 +238,7 @@ class TrainServer:
         try:
             msg = json.loads(raw)
             kind = msg.get("type")
+            sid = str(msg.get("sid") or "")
 
             # Gate the actions that drive the shared trainer. Only the current
             # owner may run them; if someone else holds the session, reply busy.
@@ -249,6 +261,7 @@ class TrainServer:
                                           "msg": "configured"}))
             elif kind == "start":
                 self._claim(ws)
+                self._train_sid = sid          # whose model this run produces
                 self._start_training()
             elif kind == "pause":
                 self._control.pause_requested = True
@@ -262,11 +275,12 @@ class TrainServer:
                                           "msg": "resumed"}))
             elif kind == "reset":
                 self._reset_model()
+                self._sessions.pop(sid, None)  # forget this user's saved model
                 self._owner = None
                 await ws.send(json.dumps({"type": "status", "phase": "idle",
                                           "msg": "model reset"}))
             elif kind == "generate":
-                result = self._generate(msg.get("prefix") or "")
+                result = self._generate(msg.get("prefix") or "", sid)
                 await ws.send(json.dumps({"type": "generated", **result}))
             else:
                 await ws.send(json.dumps({"type": "error",
@@ -374,6 +388,20 @@ class TrainServer:
                 self._post_from_thread({"type": "status", "phase": "idle",
                                         "msg": "training stopped"})
             else:
+                # Save this user's freshly trained model under their session id
+                # so a later trainer can't destroy it. Keep at most
+                # MAX_SESSIONS, evicting the oldest.
+                sid = getattr(self, "_train_sid", "") or ""
+                if sid and self._model is not None:
+                    self._sessions[sid] = {
+                        "model": self._model,
+                        "vocab_sig": getattr(self, "_model_vocab_sig", None),
+                        "env_cfg": self._env_cfg,
+                        "total_timesteps": self._total_timesteps,
+                    }
+                    self._sessions.move_to_end(sid)
+                    while len(self._sessions) > self.MAX_SESSIONS:
+                        self._sessions.popitem(last=False)  # drop oldest
                 self._post_from_thread({"type": "status", "phase": "done",
                                         "msg": "training complete"})
         except Exception as e:
@@ -396,21 +424,35 @@ class TrainServer:
 
     # ----- generation -------------------------------------------------------
 
-    def _generate(self, prefix: str) -> dict:
+    def _generate(self, prefix: str, sid: str = "") -> dict:
         """Roll out the trained policy for one full episode.
+
+        Uses the caller's own saved model (looked up by session id), so one
+        user generating isn't affected by someone else having trained since.
+        Falls back to the shared working model if no session is found (e.g.
+        the user who just trained, before anything else happened).
 
         The procedural env doesn't accept token prefixes (every pattern is
         constructed from the agent's body+corner choices), so we ignore the
         prefix argument. If you want prefix support back, you'd need to add
         a "seed N rounds from text" hook to the env.
         """
-        if self._model is None:
+        sess = self._sessions.get(sid) if sid else None
+        if sess is not None:
+            model = sess["model"]
+            env_cfg = sess["env_cfg"]
+            self._sessions.move_to_end(sid)   # mark recently used
+        else:
+            model = self._model
+            env_cfg = self._env_cfg
+
+        if model is None:
             return {"ok": False,
                     "error": "no trained model yet — start training first"}
 
         self._parser.start()
 
-        target = self._env_cfg.target_rounds
+        target = env_cfg.target_rounds
 
         # Each round now takes FOUR agent steps (body, corner, corner-template,
         # side-template), and any out-of-phase pick is skipped without advancing
@@ -422,10 +464,10 @@ class TrainServer:
         best = None
 
         for _attempt in range(8):
-            env = CrochetTokenEnv(self._parser, self._env_cfg)
+            env = CrochetTokenEnv(self._parser, env_cfg)
             obs, _ = env.reset()
             for _ in range(max_steps):
-                action, _ = self._model.predict(obs, deterministic=False)
+                action, _ = model.predict(obs, deterministic=False)
                 obs, _, term, trunc, _ = env.step(int(action))
                 if term or trunc:
                     break

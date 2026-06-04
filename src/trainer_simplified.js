@@ -103,11 +103,29 @@
     });
   }
 
+  // A stable per-browser id so the server can keep THIS user's trained model
+  // separate from everyone else's. Persisted in localStorage so it survives
+  // reloads; regenerated only if storage is unavailable.
+  var SESSION_ID = (function () {
+    try {
+      var k = "entangled_sid";
+      var v = window.localStorage.getItem(k);
+      if (!v) {
+        v = "s_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+        window.localStorage.setItem(k, v);
+      }
+      return v;
+    } catch (e) {
+      return "s_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    }
+  })();
+
   function send(obj) {
     if (!ws || ws.readyState !== WebSocket.OPEN) {
       setStatus("err", "not connected");
       return false;
     }
+    obj.sid = SESSION_ID;            // tag every message with this user's id
     ws.send(JSON.stringify(obj));
     return true;
   }
