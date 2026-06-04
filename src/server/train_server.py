@@ -353,6 +353,12 @@ class TrainServer:
             # spaces do not match". We key the rebuild on a signature of the
             # actual bodies (custom selection if any, else the difficulty),
             # and discard the model whenever that signature changes.
+            # Every "Train" click starts a brand-new model from scratch:
+            # discard any existing one so a fresh PPO is always created below.
+            # (The previous behaviour reused a same-vocab model to keep
+            # improving it across clicks; we now always reset instead.)
+            self._model = None
+
             vocab_sig = (tuple(self._env_cfg.custom_bodies)
                          if self._env_cfg.custom_bodies
                          else ("diff", self._env_cfg.difficulty))
@@ -382,7 +388,7 @@ class TrainServer:
             cb = StreamingCallback(self._post_from_thread,
                                    self._total_timesteps, self._control)
             self._model.learn(total_timesteps=self._total_timesteps,
-                              callback=cb, reset_num_timesteps=False)
+                              callback=cb, reset_num_timesteps=True)
 
             if self._control.stop_requested:
                 self._post_from_thread({"type": "status", "phase": "idle",
