@@ -184,7 +184,7 @@
     $progressLabel.textContent = "Training complete";
     setStatus("ok", "trained");
     $trainBtn.disabled = false;
-    $trainBtn.textContent = "Re-train model";
+    $trainBtn.textContent = "Train model";
     $trainHint.textContent = "Done! You can generate a pattern now.";
     $trainHint.className = "easy__hint easy__hint--ok";
     $generateBtn.disabled = false;
@@ -330,9 +330,9 @@
   function markDirty() {
     if (!trainedOnce) return;
     $generateBtn.disabled = true;
-    $generateHint.textContent = "Settings changed — re-train to apply.";
+    $generateHint.textContent = "Settings changed — train to apply.";
     $generateHint.className = "easy__hint";
-    $trainHint.textContent = "Settings changed — click to re-train.";
+    $trainHint.textContent = "Settings changed — click to train.";
     $trainHint.className = "easy__hint";
   }
 
@@ -406,6 +406,18 @@
   $trainBtn.addEventListener("click", onTrain);
   $resetBtn.addEventListener("click", onReset);
   $generateBtn.addEventListener("click", onGenerate);
+
+  // Manual reconnect: close any existing socket, then open a fresh one.
+  var $reconnectBtn = $("reconnect-btn");
+  if ($reconnectBtn) {
+    $reconnectBtn.addEventListener("click", function () {
+      setStatus("busy", "reconnecting…");
+      try { if (ws) ws.close(); } catch (e) { /* ignore */ }
+      ws = null;
+      connected = false;
+      setTimeout(connect, 150);
+    });
+  }
 
   setTimeout(connect, 100);
 })();

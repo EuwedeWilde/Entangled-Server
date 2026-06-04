@@ -37,6 +37,7 @@ import asyncio
 import json
 import queue
 import sys
+import time
 import threading
 import traceback
 from collections import OrderedDict
@@ -161,6 +162,13 @@ class TrainServer:
         # (training finishes/errors, owner resets, or owner disconnects).
         self._owner = None
 
+        # After training finishes, the owner keeps the session reserved for a
+        # short grace window so they can generate patterns without someone else
+        # grabbing the trainer and changing shared settings mid-way. Each
+        # generate refreshes the window. 0 means "no hold".
+        self._owner_hold_until = 0.0
+        self.OWNER_HOLD_SECONDS = 120
+
         # Per-user trained models, keyed by a session id the browser sends.
         # Training is still one-at-a-time (CPU-bound), but each user's trained
         # model is kept here so one person training doesn't destroy another
@@ -229,6 +237,7 @@ class TrainServer:
             # mid-training, ask the run to stop so the box isn't tied up.
             if self._owner is ws:
                 self._owner = None
+                self._owner_hold_until = 0.0
                 if (self._trainer_thread is not None
                         and self._trainer_thread.is_alive()):
                     self._control.stop_requested = True
@@ -241,12 +250,12 @@ class TrainServer:
             sid = str(msg.get("sid") or "")
 
             # Gate the actions that drive the shared trainer. Only the current
-            # owner may run them; if someone else holds the session, reply busy.
+            # owner may run them; if someone else holds the session (actively
+            # training, or within the post-training grace window), reply busy.
             session_actions = ("configure", "start", "pause", "resume",
                                "reset", "generate")
             if (kind in session_actions
-                    and self._owner is not None
-                    and self._owner in self._clients
+                    and self._owner_held()
                     and self._owner is not ws):
                 await ws.send(json.dumps({
                     "type": "status", "phase": "busy",
@@ -277,9 +286,14 @@ class TrainServer:
                 self._reset_model()
                 self._sessions.pop(sid, None)  # forget this user's saved model
                 self._owner = None
+                self._owner_hold_until = 0.0
                 await ws.send(json.dumps({"type": "status", "phase": "idle",
                                           "msg": "model reset"}))
             elif kind == "generate":
+                # If the owner generates, extend their grace window so they can
+                # keep making patterns without being interrupted.
+                if self._owner is ws and self._owner_hold_until:
+                    self._owner_hold_until = time.time() + self.OWNER_HOLD_SECONDS
                 result = self._generate(msg.get("prefix") or "", sid)
                 await ws.send(json.dumps({"type": "generated", **result}))
             else:
@@ -293,8 +307,19 @@ class TrainServer:
 
     def _claim(self, ws) -> None:
         """Mark this client as the session owner if no one else holds it."""
-        if self._owner is None or self._owner not in self._clients:
+        if not self._owner_held():
             self._owner = ws
+
+    def _owner_held(self) -> bool:
+        """True if the session is currently reserved: there is a connected
+        owner who is either actively training or still inside the post-training
+        grace window."""
+        if self._owner is None or self._owner not in self._clients:
+            return False
+        training = (self._trainer_thread is not None
+                    and self._trainer_thread.is_alive())
+        within_grace = time.time() < self._owner_hold_until
+        return training or within_grace
 
     # ----- training control -------------------------------------------------
 
@@ -415,10 +440,17 @@ class TrainServer:
             self._post_from_thread({"type": "status", "phase": "error",
                                     "msg": f"{type(e).__name__}: {e}"})
         finally:
-            # Training is over (done, stopped, or errored) — free the session
-            # so the next person can train. The trained model itself is kept
-            # until someone resets, so the owner can still generate from it.
-            self._owner = None
+            # Training has ended. Don't free the session immediately: start a
+            # grace window so the owner can generate patterns without someone
+            # else grabbing the trainer and changing shared settings. After the
+            # window passes (and they're not generating), the next _claim/gate
+            # check treats the session as free. If the run was stopped (e.g.
+            # the owner disconnected), don't bother holding it.
+            if self._control.stop_requested:
+                self._owner = None
+                self._owner_hold_until = 0.0
+            else:
+                self._owner_hold_until = time.time() + self.OWNER_HOLD_SECONDS
 
     def _reset_model(self) -> None:
         self._control.stop_requested = True
