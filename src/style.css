@@ -1,0 +1,281 @@
+/* ===========================================================================
+   style.css — shared styles loaded by both index.html (sandbox) and
+   train.html (trainer).
+
+   Contains: design tokens, fonts, reset, and the blocks that appear on
+   every page: .header, .brand, .controls, .splash, plus the pane-header
+   scaffolding (.pane__header, .pane__marker, .pane__label, .pane__counter)
+   that both pages reuse.
+
+   Sandbox-only layout (workspace grid, editor textarea, translation pane,
+   SVG canvas, error toast) lives in sandbox.css.
+   Trainer-only layout lives in train.css.
+   =========================================================================== */
+
+@font-face {
+  font-family: "Merriweather";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./fonts/Merriweather.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/Montserrat.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/SpaceMono-Regular.ttf") format("truetype");
+}
+
+
+:root {
+  --paper: #fff;
+  --paper-edge: #ffe0cc;
+  --ink: #333;
+  --ink-soft: #666;
+  --rule: #f60;
+  --accent: #f60;
+  --error: #662900;
+  --status-ok: #f60;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Montserrat", Georgia, serif;
+  overflow: hidden;
+}
+
+
+/* ===========================================================================
+   Block: header
+   =========================================================================== */
+.header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+/* ===========================================================================
+   Block: brand
+   =========================================================================== */
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.brand__title {
+  margin: 0;
+  font-family: "Merriweather", serif;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.brand__logo {
+  height: 2.5rem;
+  display: block;
+  align-self: center;
+}
+
+.brand__amp {
+  color: var(--accent);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.brand__tag {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  color: var(--ink-soft);
+  padding-left: 0.5rem;
+  align-self: center;
+  /* text-transform: uppercase; */
+  /* letter-spacing: 0.12em; */
+}
+
+/* ===========================================================================
+   Block: controls
+   =========================================================================== */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: "Space Mono", monospace;
+  font-size: 12px;
+  color: var(--ink-soft);
+  align-self: center;
+}
+
+.controls__button {
+  font-family: inherit;
+  font-size: 12px;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  padding: 5px 12px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.controls__button:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.controls__link {
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--ink);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 5px 10px;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.controls__link:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.controls__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 90px;
+}
+
+.controls__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ink-soft);
+  transition: background 0.2s;
+}
+
+.controls__dot--ok {
+  background: var(--status-ok);
+}
+
+.controls__dot--err {
+  background: var(--error);
+}
+
+.controls__dot--busy {
+  background: var(--accent);
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* ===========================================================================
+   Block: pane header (shared scaffolding)
+   The pane container itself and its layout (split halves, etc.) live in the
+   per-page stylesheet. These header rules are reused by both pages.
+   =========================================================================== */
+.pane__header {
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  padding: 0.5rem 2rem;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pane__marker {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.pane__label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.pane__counter {
+  /* right-aligned count text in the pane header */
+}
+
+/* ===========================================================================
+   Block: splash (loading screen)
+   =========================================================================== */
+.splash {
+  position: fixed;
+  inset: 0;
+  background: var(--paper);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  font-family: "Space Mono", monospace;
+  font-size: 12px;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  transition: opacity 0.4s;
+}
+
+.splash__spinner {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--ink);
+  border-bottom-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+.splash__label {
+  /* the "Casting on…" text */
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.splash--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
