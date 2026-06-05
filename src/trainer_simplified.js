@@ -20,18 +20,23 @@
   var $statusTxt    = $("status-text");
   var $wsUrl        = $("ws-url");
 
-  // Auto-detect the trainer address from however this page was loaded.
-  // Local file / localhost -> keep ws://127.0.0.1:8765.
-  // Served from a real host (your server) -> connect back to that same host.
-  // Set window.TRAINER_WS_PORT before this script to override the port.
+  // Auto-detect the trainer address from however this page was loaded:
+  //  - Local file / localhost            -> ws://127.0.0.1:8765 (direct)
+  //  - Served over plain http on the VPS -> ws://<host>:8765    (direct)
+  //  - Served over https (domain+nginx)  -> wss://<host>/wss    (proxied)
+  // The https case goes through nginx because browsers block ws:// from an
+  // https page, and proxying avoids needing a second certificate on 8765.
   (function () {
     try {
       var host = window.location && window.location.hostname;
       var isLocal = !host || host === "localhost" || host === "127.0.0.1";
       if (!isLocal && $wsUrl) {
-        var proto = window.location.protocol === "https:" ? "wss://" : "ws://";
-        var port  = window.TRAINER_WS_PORT || 8765;
-        $wsUrl.value = proto + host + ":" + port;
+        if (window.location.protocol === "https:") {
+          $wsUrl.value = "wss://" + host + "/wss";
+        } else {
+          var port = window.TRAINER_WS_PORT || 8765;
+          $wsUrl.value = "ws://" + host + ":" + port;
+        }
       }
     } catch (e) { /* fall back to the hardcoded value */ }
   })();
