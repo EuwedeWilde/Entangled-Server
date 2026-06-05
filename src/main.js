@@ -54,25 +54,12 @@ var Module = {
   // Default pattern. Small, fast, valid — from the CrochetPARADE manual.
   // ---------------------------------------------------------------------------
   var DEFAULT_PATTERN = [
-    "# Type CrochetPARADE instructions here.",
-    "# The preview re-renders ~250 ms after you stop typing.",
-    "#",
-    "# Each line is a row/round. The chart on the right shows",
-    "# standard crochet symbols. Edit anything to see it update.",
-    "",
-    'DEF: p=3ch,ss@1[%,%-4]',
-    '6ch.Ring+1!,ss@[%,0]',
-    '[ch,15sc].Ring1[]@Ring,ss@[%,0]',
-    'ch,sk,sc,[2sc,<,p]*8,ss@[%,0],sc@Ring1[][0]',
-    '$c=0$,@Ring1[][0],[5ch.chain_space[0,c++]+!,sk,>,sc]*8,ss@[-1,-1]',
-    '$t=0,c=0$,ch,[sc,hdc,dc,p,tr.Tip[t++],dc,p,hdc,>,sc]@chain_space[0,c++]*8,ss@[%,0]',
-    '# This starts a new yarn with chain-3 then 3dc together in base to form a starting dc-4 bobble:',
-    'DEF: dc4bobble_start_new= &a dc bobble of 4 stitches^B(hidden);C(ch);D(ch),A(dc):B1~A-B1:E(line);F(line);G(line);H(line);I(line);J(line):!-skip-B;B1-0.001-B;B-0.7-C;C-0.8-D;D-0.7-A;B-0.7-E;E-0.8-F;F-0.7-A;B-0.7-G;G-0.8-H;H-0.7-A;B-0.7-I;I-0.8-J;J-0.7-A',
-    '$t=0,c=0$,dc4bobble_start_new@Tip[t],[dc4bobble@Tip[t],<,2ch.chsp[c++]+!,tr4bobble@Tip[t],2ch.chsp[c++]+!,dc4bobble@Tip[t],4ch.chsp[c++]+!,hdc@Tip[++t],4ch.chsp[c++]+!,$t++$]*4,sc@[%,3]',
-    '$c=0$,3ch,[3tr@chsp[c++],3ch,3tr@chsp[c++],ch,>,(4dc@chsp[c++],ch)*2]*4,4dc@chsp[c++],ch,3dc@chsp[c++],ss@[%,1]',
-    'ch,2sk,5sc,[sc,dc@[@],sc@[@],13sc,>,6sc]*4,ss@[%,0]',
-    'DOT: start=1',
-    'DOT: viscous_iterations=20'
+    "# Welcome to Entangled, a live simulator and AI pattern Trainer",
+    "# Click on Trainer in the top right to train your own model!",
+    "ring.R",
+    "3ch,ch.x,[tr.st_1_1,tr.st_1_2].cl_1_1@R,4ch.cs_1_1+!,[tr.st_1_3,tr.st_1_4].cl_1_2@R,4ch.cs_1_2+!,[tr.st_1_5,tr.st_1_6].cl_1_3@R,4ch.cs_1_3+!,[tr.st_1_7,tr.st_1_8].cl_1_4@R,4ch.cs_1_4+!,ss@st_1_1,turn",
+    "1ch,ch.x,[hdc.st_2_1,hdc.st_2_2].cl_2_1@cs_1_4,4ch.cs_2_1+!,[hdc.st_2_3,hdc.st_2_4].cl_2_2@cs_1_4,5ch.cs_2_2,[hdc.st_2_5,hdc.st_2_6].cl_2_3@cs_1_3,4ch.cs_2_3+!,[hdc.st_2_7,hdc.st_2_8].cl_2_4@cs_1_3,5ch.cs_2_4,[hdc.st_2_9,hdc.st_2_10].cl_2_5@cs_1_2,4ch.cs_2_5+!,[hdc.st_2_11,hdc.st_2_12].cl_2_6@cs_1_2,5ch.cs_2_6,[hdc.st_2_13,hdc.st_2_14].cl_2_7@cs_1_1,4ch.cs_2_7+!,[hdc.st_2_15,hdc.st_2_16].cl_2_8@cs_1_1,5ch.cs_2_8,ss@st_2_1,turn",
+    "1ch,ch.x,[hdc.st_3_1,hdc.st_3_2,hdc.st_3_3,hdc.st_3_4,hdc.st_3_5].cl_3_1@cs_2_8,4ch.cs_3_1,[hdc.st_3_6,hdc.st_3_7,hdc.st_3_8,hdc.st_3_9,hdc.st_3_10].cl_3_2@cs_2_7,5ch.cs_3_2+!,[hdc.st_3_11,hdc.st_3_12,hdc.st_3_13,hdc.st_3_14,hdc.st_3_15].cl_3_3@cs_2_7,4ch.cs_3_3,[hdc.st_3_16,hdc.st_3_17,hdc.st_3_18,hdc.st_3_19,hdc.st_3_20].cl_3_4@cs_2_6,4ch.cs_3_4,[hdc.st_3_21,hdc.st_3_22,hdc.st_3_23,hdc.st_3_24,hdc.st_3_25].cl_3_5@cs_2_5,5ch.cs_3_5+!,[hdc.st_3_26,hdc.st_3_27,hdc.st_3_28,hdc.st_3_29,hdc.st_3_30].cl_3_6@cs_2_5,4ch.cs_3_6,[hdc.st_3_31,hdc.st_3_32,hdc.st_3_33,hdc.st_3_34,hdc.st_3_35].cl_3_7@cs_2_4,4ch.cs_3_7,[hdc.st_3_36,hdc.st_3_37,hdc.st_3_38,hdc.st_3_39,hdc.st_3_40].cl_3_8@cs_2_3,5ch.cs_3_8+!,[hdc.st_3_41,hdc.st_3_42,hdc.st_3_43,hdc.st_3_44,hdc.st_3_45].cl_3_9@cs_2_3,4ch.cs_3_9,[hdc.st_3_46,hdc.st_3_47,hdc.st_3_48,hdc.st_3_49,hdc.st_3_50].cl_3_10@cs_2_2,4ch.cs_3_10,[hdc.st_3_51,hdc.st_3_52,hdc.st_3_53,hdc.st_3_54,hdc.st_3_55].cl_3_11@cs_2_1,5ch.cs_3_11+!,[hdc.st_3_56,hdc.st_3_57,hdc.st_3_58,hdc.st_3_59,hdc.st_3_60].cl_3_12@cs_2_1,4ch.cs_3_12,ss@st_3_1,turn"
   ].join("\n");
 
   // ---------------------------------------------------------------------------
