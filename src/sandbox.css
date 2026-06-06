@@ -186,3 +186,103 @@
 .error--visible {
   display: block;
 }
+
+/* ===========================================================================
+   Responsive: stack panes vertically below ~860px.
+
+   Desktop layout is a two-column grid: [editor + plain-English] | [chart].
+   On mobile we want a single column with the visual order:
+       1. Chart
+       2. Plain English
+       3. Code editor (Pattern)
+
+   The chart lives in the 2nd top-level .pane, and the editor/translation
+   are the two halves of the 1st .pane--split. We flatten everything to a
+   flex column and use `order` to rearrange without touching the HTML.
+   =========================================================================== */
+@media (max-width: 860px) {
+  /* Let the page scroll instead of locking to viewport height. */
+  html,
+  body {
+    height: auto;
+    overflow: auto;
+  }
+
+  .workspace {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+
+  /* Drop the vertical divider that separated the two desktop columns. */
+  .pane + .pane {
+    border-left: none;
+    border-top: 1px solid var(--rule);
+  }
+
+  /* Chart pane first. */
+  .pane:not(.pane--split) {
+    order: 1;
+  }
+
+  /* The split pane (editor + translation) comes after the chart, and we
+     turn off its own internal flex sizing so the halves can be reordered
+     and each take natural height. */
+  .pane--split {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Inside the split pane: Plain English above the code editor. */
+  .pane__half--translation {
+    order: 1;
+    border-top: 1px solid var(--rule);
+  }
+
+  .pane__half:not(.pane__half--translation) {
+    order: 2;
+  }
+
+  .pane__half + .pane__half {
+    border-top: 1px solid var(--rule);
+  }
+
+  /* Give each stacked region a sensible minimum height so they don't
+     collapse to nothing now that the viewport no longer constrains them. */
+  .canvas {
+    min-height: 60vh;
+  }
+
+  .editor,
+  .translation {
+    min-height: 30vh;
+  }
+}
+
+/* Phone tightening for the sandbox header/panes (matches train.css). */
+@media (max-width: 600px) {
+  .header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .controls {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .pane__header {
+    padding: 0.5rem 1rem;
+  }
+
+  .editor,
+  .translation {
+    padding: 1rem 1rem;
+  }
+
+  .brand__title {
+    font-size: 1.5rem;
+  }
+}

@@ -496,3 +496,38 @@
     overflow: auto;
   }
 }
+
+/* ===========================================================================
+   Responsive: phone tightening (below ~600px).
+
+   The 1100px rule above already stacks the three panes vertically in their
+   natural order (1 settings · 2 train · 3 generate), which is the order we
+   want top-to-bottom. This block just trims padding and lets the header
+   wrap so nothing overflows on a narrow phone.
+   =========================================================================== */
+@media (max-width: 600px) {
+  .header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .controls {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .pane__header {
+    padding: 0.5rem 1rem;
+  }
+
+  .config,
+  .progress,
+  .generate {
+    padding: 1rem 1rem;
+  }
+
+  .brand__title {
+    font-size: 1.5rem;
+  }
+}
