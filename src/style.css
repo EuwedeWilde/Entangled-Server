@@ -279,3 +279,64 @@ body {
   opacity: 0;
   pointer-events: none;
 }
+
+
+/* ===========================================================================
+   Responsive header / nav bar (shared by both pages).
+
+   Desktop keeps the roomy 1rem 2rem header. As the viewport narrows we let
+   the controls wrap under the brand, tighten padding, and step the logo +
+   title down so the nav never overflows or crowds on a phone.
+   =========================================================================== */
+@media (max-width: 860px) {
+  .header {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    padding: 0.85rem 1.25rem;
+  }
+
+  .brand {
+    align-items: center;
+  }
+
+  .brand__logo {
+    height: 2rem;            /* slightly smaller logo */
+  }
+
+  .brand__title {
+    font-size: 1.6rem;
+  }
+
+  .controls {
+    flex-wrap: wrap;
+    gap: 10px 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 0.7rem 1rem;
+  }
+
+  .brand {
+    gap: 0.4rem;
+  }
+
+  .brand__logo {
+    height: 1.75rem;         /* smaller again on phones */
+  }
+
+  .brand__title {
+    font-size: 1.4rem;
+  }
+
+  .brand__tag {
+    font-size: 0.85rem;
+    padding-left: 0.35rem;
+  }
+
+  .pane__header {
+    padding: 0.5rem 1rem;
+  }
+}
