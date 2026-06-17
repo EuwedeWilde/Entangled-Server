@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="main.css" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="/assets/images/favicon.svg">
+  <title>Euwe de Wilde - Portfolio</title>
+</head>
+
+
+
+<body>
+  <div class="loader" id="loader">
+    <svg class="loader-logo" viewBox="0 0 2000 2000" xmlns="http://www.w3.org/2000/svg"
+      style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+      <g>
+        <g transform="matrix(-0.771608,-0.771608,0.657704,-0.657704,1578.157248,2940.608401)">
+          <path d="M888.671,1262.938L1621.797,1262.938L1621.797,402.846L888.671,1262.938Z"
+            style="fill:rgb(235,235,235);stroke:rgb(6,9,15);stroke-width:82.19px;" />
+        </g>
+        <g transform="matrix(-0.771608,-0.771608,0.657704,-0.657704,1578.157248,2940.608401)">
+          <path d="M888.671,1262.938L1621.797,1262.938L1621.797,402.846L888.671,1262.938Z"
+            style="fill:rgb(249,246,240);stroke:rgb(6,9,15);stroke-width:82.19px;" />
+        </g>
+        <g transform="matrix(0.578706,-0.578706,0.493278,0.493278,-545.538658,1315.564174)">
+          <path class="logo-magenta" d="M888.671,1262.938L1621.797,1262.938L1621.797,402.846L888.671,1262.938Z" />
+        </g>
+        <g transform="matrix(-0.385804,0.385804,-0.328852,-0.328852,2481.262608,931.04524)">
+          <path class="logo-cyan" d="M888.671,1262.938L1621.797,1262.938L1621.797,402.846L888.671,1262.938Z" />
+        </g>
+        <g transform="matrix(0.545609,0,0,0.465067,-293.147467,388.385629)">
+          <path class="logo-yellow" d="M888.671,1262.938L1621.797,1262.938L1621.797,402.846L888.671,1262.938Z" />
+        </g>
+      </g>
+      <g transform="matrix(-0.771608,-0.771608,0.657704,-0.657704,1578.157248,2940.608401)">
+        <path
+          d="M1912.442,680.475L2144.641,408.062C2155.562,395.251 2171.985,391.418 2186.253,398.352C2200.522,405.285 2209.825,421.62 2209.825,439.738L2209.825,1047.582C2209.844,1050.607 2209.603,1053.646 2209.093,1056.654C2208.416,1060.649 2207.283,1064.482 2205.746,1068.061C2203.891,1072.386 2201.48,1076.263 2198.642,1079.591C2195.804,1082.922 2192.5,1085.75 2188.813,1087.926C2185.763,1089.729 2182.495,1091.058 2179.091,1091.852C2176.527,1092.451 2173.936,1092.734 2171.358,1092.711L1659.98,1092.711L1659.98,1262.938C1659.98,1287.678 1642.885,1307.734 1621.797,1307.734L1293.418,1307.734L1293.418,1692.983C1293.418,1711.102 1284.115,1727.436 1269.846,1734.37C1255.578,1741.304 1239.155,1737.471 1228.234,1724.659L861.872,1294.849C860.035,1292.726 858.373,1290.377 856.921,1287.826C854.992,1284.44 853.483,1280.79 852.413,1276.985C851.118,1272.388 850.486,1267.646 850.486,1262.938C850.486,1258.229 851.118,1253.487 852.413,1248.89C853.483,1245.085 854.992,1241.435 856.921,1238.049C858.373,1235.499 860.035,1233.149 861.872,1231.027L1594.596,371.405C1596.406,369.25 1598.408,367.301 1600.582,365.598C1603.468,363.334 1606.58,361.564 1609.823,360.308C1613.742,358.789 1617.783,358.047 1621.797,358.048C1625.81,358.047 1629.852,358.789 1633.77,360.308C1637.014,361.564 1640.125,363.334 1643.011,365.598C1645.185,367.301 1647.188,369.25 1648.997,371.405L1912.442,680.475ZM2133.457,939.767L2133.457,547.886L1966.442,743.826L2133.457,939.767ZM1659.98,1003.118L2079.458,1003.118L1885.442,775.502L1659.98,510.994L1659.98,1003.118ZM1255.234,1218.141L1583.613,1218.141L1583.613,510.994L980.855,1218.141L1255.234,1218.141ZM980.855,1307.734L1217.05,1584.835L1217.05,1307.734L980.855,1307.734Z"
+          style="fill:rgb(6,9,15);" />
+      </g>
+    </svg>
+  </div>
+
+
+  <canvas class="mouse"></canvas>
+  <div class="lens">
+    <div class="lens-content" aria-hidden="true"></div>
+  </div>
+  <nav class="nav">
+    <a class="nav-home">
+      <img class="nav-logo" src="assets/images/favicon.svg" alt="eend">
+      <h1 class="nav-title">
+        Euwe de Wilde
+      </h1>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#sec-identity">Identity</a></li>
+      <li><a href="#sec-vision">Vision</a></li>
+      <li><a href="#sec-past">Past</a></li>
+      <li><a href="#sec-present">Present</a></li>
+      <li><a href="#sec-future">Future</a></li>
+    </ul>
+  </nav>
+  <main class="main" id="top">
+    <section class="landing">
+      <video class="landing-video" autoplay muted loop playsinline>
+        <source src="assets/videos/landing.mp4" type="video/mp4">
+      </video>
+      <div class="landing-content">
+        <h2 class="landing-title">
+          Euwe de Wilde
+        </h2>
+        <h3 class="landing-sub-title" id="sub-title">
+          Creative Technologist - Ultra Cyclist - Energetic Person
+
+        </h3>
+      </div>
+    </section>
+    <section class="section">
+      <figure class="side-fig" data-anchor="p-identity-ultra" data-side="left">
+        <div class="side-slider" data-lens>
+          <img class="side-img slide active" src="assets/images/ultra1.jpeg"></img>
+          <img class="side-img slide slide-b" src="assets/images/ultra2.jpeg"></img>
+          <img class="side-img slide slide-c" src="assets/images/ultra3.jpeg"></img>
+        </div>
+        <div class="slider-dots"></div>
+        <figcaption>Ultra-distance cycling</figcaption>
+      </figure>
+      <figure class="side-fig" data-anchor="p-identity-making" data-side="right">
+        <div class="side-slider" data-lens>
+          <img class="side-img slide active" src="assets/images/making1.jpeg"></img>
+          <img class="side-img slide slide-b" src="assets/images/making2.jpeg"></img>
+          <img class="side-img slide slide-c" src="assets/images/making3.jpeg"></img>
+        </div>
+        <div class="slider-dots"></div>
+        <figcaption>Making prototypes</figcaption>
+      </figure>
+      <h2 class="section-title" id="sec-identity">Identity</h2>
+      <div class="section-text">
+        <p class="section-paragraph" id="p-identity-ultra">
+          I love learning new skills and concepts and then applying them in context. This is due to my high intrinsic
+          motivation, which drives me to pursue learning opportunities and avoid distractions that demotivate me from
+          reaching a desired outcome. This often leads to high standards and results in a varied set of skills developed
+          to a high standard. This is present in my personal life, for example in ultra-distance cycling, but also in an
+          educational setting in courses and projects. I have "scheppingsdrang", the craving to create something novel,
+          especially when it involves inherent complexity and making that accessible to users through design.
+        </p>
+        <p class="section-paragraph">
+          I always try to create complete systems that are executed to a high degree, which means that I need to have a
+          holistic but also detail-oriented approach. I can, however, get stuck on those details, which makes me focus
+          on making things work rather than looking at the bigger picture. To combat this, I started to implement a more
+          structured design process. Earlier design processes followed a more chaotic structure of trying and starting
+          over if something did not work, which often led to pressing time constraints. With the application of RTDP [3],
+          this process became more structured, due to the reflection moments it embeds. This leads me to realize more
+          quickly when I am drifting off track and what should be done to combat that. However, my application of the
+          RTDP [3] process could still be more structured, not only reflecting on my performed design actions but also
+          placing them in context and using them to explore various outcomes towards a desired solution.
+        </p>
+        <p class="section-paragraph" id="p-identity-making">
+          In line with my vision, my designs aim to create novel solutions by abstracting complex technologies and
+          making them accessible to users, thus creating new, useful interactions. To do so, an interplay between the
+          various expertise areas is needed. While my strengths lie in Technology &amp; Realization and Math, Data &amp;
+          Computing, I also realize that the other areas play an important role. Addressing all these areas within a
+          design process will result in a design that has a substantial impact. To do so, I try to learn new concepts,
+          frameworks, and methods in different areas and apply them in my designs. There is a tendency to rely too much
+          on TR and MDC. This could be combated by applying the Research through Design approach, which uses the
+          expertise areas as a starting point for design rather than using an expertise area to build on an existing
+          design. This will be something I explore further in my master's.
+        </p>
+        <p class="section-paragraph">
+          My desire to create designs with high standards also shines through in collaborative work. I noticed that my
+          positive, enthusiastic, and ambitious attitude helps to create synergy when working with clients and team
+          members. However, in striving for high quality, I tended to take on too much work from other team members, out
+          of fear that they would not meet my expectations. This often led me to take too much on my plate and
+          eventually made me realize that this is not a healthy, sustainable approach to teamwork. I learned to address
+          those issues as a group and tackle them with collaborative thinking and reflection. While I made good efforts
+          during my bachelor's to improve this, it is still something I continue working on in future collaborative
+          work.
+        </p>
+      </div>
+    </section>
+    <section class="section">
+      <h2 class="section-title" id="sec-vision">Vision</h2>
+      <div class="section-text">
+        <p class="section-paragraph">
+          The world is not the same as it was the day before; these are times of rapidly changing technologies that
+          have big implications, from inventions in prosthetic enhancements to gene editing and artificial intelligence.
+          A significant amount of money is put into the development of these sectors in the hope that they will produce
+          meaningful results that could benefit humanity. However, this approach prioritizes rapid growth, meaning that
+          the impact on other sectors is often neglected.
+        </p>
+        <p class="section-paragraph">
+          At the same time, there is a big focus on sustainability, with companies calling for "sustainable
+          development". There is a contradiction in that statement: how can sustainability be achieved when a company is
+          expanding? [2] I do not believe technological progress should be halted, since it has a significant chance to
+          change and improve life, but there should be more transparency in its internal workings, and said technology
+          should not be observed in a vacuum.
+        </p>
+        <p class="section-paragraph">
+          Nonetheless, technology seems to be more and more a black box nowadays [4]; users just give it input, and an
+          output is received. This is particularly dominant in the field of artificial intelligence, but also in
+          everyday consumer devices and software. The impact of its development on the environment is not revealed [5], and
+          its internal workings stay vague and abstract.
+        </p>
+        <p class="section-paragraph">
+          Designers should be the conductors in making these technologies more transparent by being honest about their
+          workings [6]. They should help people understand the impact a product has and how certain results are achieved. To
+          do so, they need a deep technical understanding of the inner workings, in order to identify the pitfalls of an
+          artifact. This will make critiquing more accessible, which I believe will result in better overall outcomes,
+          not only in the short term but also in the long run, leading to more ethical, sustainable, and better-working
+          products.
+        </p>
+      </div>
+    </section>
+    <section class="section">
+      <figure class="side-fig" data-anchor="young-me" data-side="left">
+        <div class="side-slider" data-lens>
+          <img class="side-img slide active" src="assets/images/young1.jpeg"></img>
+          <img class="side-img slide slide-b" src="assets/images/young2.jpeg"></img>
+          <img class="side-img slide slide-c" src="assets/images/young3.jpeg"></img>
+        </div>
+        <div class="slider-dots"></div>
+        <figcaption>Me discovering the world</figcaption>
+      </figure>
+      <figure class="side-fig" data-anchor="first-year" data-side="right">
+        <div class="side-slider" data-lens>
+          <img class="side-img slide active" src="assets/images/fy1.png"></img>
+          <img class="side-img slide slide-b" src="assets/images/fy2.jpeg"></img>
+          <img class="side-img slide slide-c" src="assets/images/fy3.jpeg"></img>
+        </div>
+        <div class="slider-dots"></div>
+        <figcaption>First year prototypes</figcaption>
+      </figure>
+      <figure class="side-fig" data-anchor="project-2-artifice" data-side="left">
+        <div class="side-slider" data-lens>
+          <img class="side-img slide active" src="assets/images/ai1.jpeg"></img>
+          <img class="side-img slide slide-b" src="assets/images/ai2.jpeg"></img>
+          <img class="side-img slide slide-c" src="assets/images/ai3.jpeg"></img>
+        </div>
+        <div class="slider-dots"></div>
+        <figcaption>The making of AI10Y</figcaption>
+      </figure>
+      <figure class="side-fig" data-anchor="project-3-transforming-practices" data-side="right">
+        <div class="side-slider" data-lens>
+          <img class="side-img slide active" src="assets/images/tp1.jpeg"></img>
+          <img class="side-img slide slide-b" src="assets/images/tp2.jpeg"></img>
+          <img class="side-img slide slide-c" src="assets/images/tp3.png"></img>
+        </div>
+        <div class="slider-dots"></div>
+        <figcaption>Transforming Practices</figcaption>
+      </figure>
+      <figure class="side-fig" data-anchor="internship-interactive-matter" data-side="left">
+        <div class="side-slider" data-lens>
+          <img class="side-img slide active" src="assets/images/intern1.jpeg"></img>
+          <img class="side-img slide slide-b" src="assets/images/intern2.jpeg"></img>
+          <img class="side-img slide slide-c" src="assets/images/intern3.jpeg"></img>
+        </div>
+        <div class="slider-dots"></div>
+        <figcaption>Internship at Interactive Matter</figcaption>
+      </figure>
+      <figure class="side-fig" data-anchor="influential-design-courses" data-side="right">
+        <div class="side-slider" data-lens>
+          <img class="side-img slide active" src="assets/images/courses1.jpeg"></img>
+          <img class="side-img slide slide-b" src="assets/images/courses2.jpeg"></img>
+          <img class="side-img slide slide-c" src="assets/images/courses3.jpeg"></img>
+        </div>
+        <div class="slider-dots"></div>
+        <figcaption>Design courses</figcaption>
+      </figure>
+      <figure class="side-fig" data-anchor="extracurricular-activities" data-side="left">
+        <div class="side-slider" data-lens>
+          <img class="side-img slide active" src="assets/images/extra1.jpeg"></img>
+          <img class="side-img slide slide-b" src="assets/images/extra2.jpeg"></img>
+          <img class="side-img slide slide-c" src="assets/images/extra3.jpeg"></img>
+        </div>
+        <div class="slider-dots"></div>
+        <figcaption>Extracurricular activities</figcaption>
+      </figure>
+      <h2 class="section-title" id="sec-past">Past</h2>
+      <div class="section-text">
+        <p class="section-paragraph" id="young-me">
+          From a young age I have had a deep interest in arts and science, which resulted in a search for a study that
+          could combine the two. This eventually led to the discovery of Industrial Design, where I could combine
+          creativity and technology. Over the past years, these interests formed the basis that shaped me as a designer.
+          This section highlights the main contributors that led me to become the designer I currently am.
+        </p>
+        <h3 class="section-sub-title" id="first-year">First Year</h3>
+        <p class="section-paragraph">
+          From Idea to Design was the course that introduced me to the design process of diverging and converging, where
+          I would ideate, iterate, and prototype [<a class="area-link" href="#creativity-and-aesthetics">CA</a>, <a class="area-link" href="#technology-and-realization">TR</a>] to create a hybrid physical-digital board game. This led to
+          "Leaderboard", a board game to train leadership skills in a group setting. Project 1 let me experience the
+          diverging-converging framework in a longer design process, where I would apply the "Double Diamond". It was
+          also the first time I would apply user testing within a design project [<a class="area-link" href="#user-and-society">US</a>]. This took place in the subgroup
+          "Vital People", where I developed a folding LED light ("LETT") that helped users focus and take breaks [<a class="area-link" href="#creativity-and-aesthetics">CA</a>,
+          <a class="area-link" href="#technology-and-realization">TR</a>].
+        </p>
+        <h3 class="section-sub-title" id="project-2-artifice">Project 2 - Artifice</h3>
+        <p class="section-paragraph">
+          For Project 2, I designed an interactive installation that showed what AI could mean in a future home setting,
+          made for the Philips Museum [<a class="area-link" href="#user-and-society">US</a>, <a class="area-link" href="#business-and-entrepreneurship">BE</a>]. During this project I learned multiple technical skills that would later
+          form the foundation for all my physical-digital prototypes [<a class="area-link" href="#technology-and-realization">TR</a>, <a class="area-link" href="#math-data-and-computing">MDC</a>]. After the project I developed the
+          prototype (AI10Y, pronounced "alloy") further with the help of Interactive Matter, a collaboration that would
+          later land me an internship. The project is to this day still on display at the Philips Museum.
+        </p>
+        <h3 class="section-sub-title" id="project-3-transforming-practices">Project 3 - Transforming Practices</h3>
+        <p class="section-paragraph">
+          In Transforming Practices, a research-through-design process was applied that focused on ethnography in
+          combination with bike repair [<a class="area-link" href="#user-and-society">US</a>]. A key takeaway was that studying human behavior can be done simply by
+          watching and reporting the findings. However, doing this at a large scale is hard, which led to the
+          development of an autonomous motion tracker that would track the tool usage of bike repair stations across a
+          larger area, while remaining fully anonymous [<a class="area-link" href="#technology-and-realization">TR</a>, <a class="area-link" href="#math-data-and-computing">MDC</a>]. This tool would later be used to efficiently validate
+          changes that improve the bike repair stations.
+        </p>
+        <h3 class="section-sub-title" id="internship-interactive-matter">Internship - Interactive Matter</h3>
+        <p class="section-paragraph">
+          During my internship at Interactive Matter, I learned various technical skills regarding the realization
+          process of design, and I gained insight into the behind-the-scenes of a design company. I learned to work with
+          real clients and to produce high-quality, safe electronic prototypes to their requirements. I developed many
+          hard skills (e.g. PCB design, software development, and advanced CAD modeling) but also soft skills (e.g.
+          client communication, better time management, and working on a budget) [<a class="area-link" href="#business-and-entrepreneurship">BE</a>, <a class="area-link" href="#technology-and-realization">TR</a>, <a class="area-link" href="#math-data-and-computing">MDC</a>].
+        </p>
+        <h3 class="section-sub-title" id="influential-design-courses">Influential Design Courses</h3>
+        <p class="section-paragraph">
+          There were a couple of courses that significantly added to my development as a designer. Aesthetics of
+          Interaction let me discover that beauty can also lie in interactions, not only in physical appearance, which I
+          still keep in mind when designing [<a class="area-link" href="#creativity-and-aesthetics">CA</a>]. Several courses were also followed regarding business: Introduction to
+          Business Design, Design Management, Design Innovation Methods, the Technology Entrepreneurship USE-line, and
+          Futures Thinking. These courses provided me with the insights to analyze the viability and feasibility of a
+          design, which made me a more critical designer [<a class="area-link" href="#business-and-entrepreneurship">BE</a>]. Lastly, I want to mention Intelligent Interactive
+          Products, where I learned the fundamentals of AI gesture recognition and whose models formed the basis for my
+          FBP [<a class="area-link" href="#math-data-and-computing">MDC</a>].
+        </p>
+        <h3 class="section-sub-title" id="premaster-mechanical-engineering">Premaster - Mechanical Engineering</h3>
+        <p class="section-paragraph">
+          During my bachelor's, I also decided to follow the premaster of Mechanical Engineering to better understand
+          the theory behind complex technical systems. Although the material learned in these courses was mainly
+          theoretical, it gave me the foundation to better understand the complexities behind the technology in a design
+          [<a class="area-link" href="#math-data-and-computing">MDC</a>].
+        </p>
+        <h3 class="section-sub-title" id="extracurricular-activities">Extracurricular Activities</h3>
+        <p class="section-paragraph">
+          Besides my education, there were activities that significantly contributed to my development. Firstly, I want
+          to mention the continuation of AI10Y, which after the completion of Project 2 was developed further to improve
+          its user interaction, appearance, and technical functionality [<a class="area-link" href="#user-and-society">US</a>, <a class="area-link" href="#technology-and-realization">TR</a>, <a class="area-link" href="#creativity-and-aesthetics">CA</a>]. It has been presented at events
+          such as the GroenPact conference, Kennisfestival, and Night of the Nerd, and it still stands, since April
+          2024, at the BrAInport exhibition at the Philips Museum. It occasionally needed a repair, which I would do
+          during summer jobs at my old internship company.
+        </p>
+        <p class="section-paragraph">
+          In my free time I like to spend time on personal projects. One I am currently still working on is the
+          development of a custom bike computer designed with the intent to explore rather than follow a fixed route. I
+          am currently making a Minimal Viable Product, but once it is finished everything will be posted on my GitHub
+          [<a class="area-link" href="#creativity-and-aesthetics">CA</a>, <a class="area-link" href="#technology-and-realization">TR</a>]. Earlier on, I also started my own sustainable clothing brand called Lapswans, where I would sell
+          ethical and sustainable apparel with a unique design. I decided to end this in my last year of study, due to a
+          lack of time, but I gained many insights regarding running a personal business [<a class="area-link" href="#business-and-entrepreneurship">BE</a>].
+        </p>
+        <p class="section-paragraph">
+          I have been part of several committees, most notably LEARN (the extracurricular learning committee of Lucid),
+          where I learned to structure meetings, budget finances, and organize educational events for large groups.
+          Lastly, I want to mention the French EuroteQ course I followed during my FBP, since this academic year I
+          decided to learn an additional language besides Dutch and English to better engage with a different culture. I
+          started from zero and have since achieved a B1 level of proficiency.
+        </p>
+      </div>
+    </section>
+    <section class="section">
+      <figure class="side-fig" data-anchor="business-and-entrepreneurship" data-side="right">
+        <div class="side-slider" data-lens>
+          <img class="side-img slide active" src="assets/images/be1.png"></img>
+          <img class="side-img slide slide-b" src="assets/images/be2.png"></img>
+          <img class="side-img slide slide-c" src="assets/images/be3.png"></img>
+        </div>
+        <div class="slider-dots"></div>
+        <figcaption>Applying BE frameworks</figcaption>
+      </figure>
+      <figure class="side-fig" data-anchor="creativity-and-aesthetics" data-side="left">
+        <div class="side-slider" data-lens>
+          <img class="side-img slide active" src="assets/images/ca1.jpeg"></img>
+          <img class="side-img slide slide-b" src="assets/images/ca2.png"></img>
+          <img class="side-img slide slide-c" src="assets/images/ca3.jpeg"></img>
+        </div>
+        <div class="slider-dots"></div>
+        <figcaption>Integrating CA</figcaption>
+      </figure>
+      <figure class="side-fig" data-anchor="math-data-and-computing" data-side="right">
+        <div class="side-slider" data-lens>
+          <img class="side-img slide active" src="assets/images/mdc1.jpeg"></img>
+          <img class="side-img slide slide-b" src="assets/images/mdc2.jpeg"></img>
+          <img class="side-img slide slide-c" src="assets/images/mdc3.jpeg"></img>
+        </div>
+        <div class="slider-dots"></div>
+        <figcaption>Experimenting with MDC</figcaption>
+      </figure>
+      <figure class="side-fig" data-anchor="technology-and-realization" data-side="left">
+        <div class="side-slider" data-lens>
+          <img class="side-img slide active" src="assets/images/tr1.png"></img>
+          <img class="side-img slide slide-b" src="assets/images/tr2.jpeg"></img>
+          <img class="side-img slide slide-c" src="assets/images/tr3.jpeg"></img>
+        </div>
+        <div class="slider-dots"></div>
+        <figcaption>Applying TR</figcaption>
+      </figure>
+      <figure class="side-fig" data-anchor="user-and-society" data-side="right">
+        <div class="side-slider" data-lens>
+          <img class="side-img slide active" src="assets/images/us1.png"></img>
+          <img class="side-img slide slide-b" src="assets/images/us2.jpeg"></img>
+          <img class="side-img slide slide-c" src="assets/images/us3.png"></img>
+        </div>
+        <div class="slider-dots"></div>
+        <figcaption>Getting input for US</figcaption>
+      </figure>
+      <!-- <figure class="side-fig side-fig--bottom" data-anchor="design-and-research-process" data-side="left">
+        <div class="side-slider" data-lens>
+          <img class="side-img slide active" src="assets/images/drp1.png"></img>
+          <img class="side-img slide slide-b" src="assets/images/drp2.jpeg"></img>
+          <img class="side-img slide slide-c" src="assets/images/drp3.png"></img>
+        </div>
+        <div class="slider-dots"></div>
+        <figcaption>Visualizing DRP</figcaption>
+      </figure> -->
+      <h2 class="section-title" id="sec-present">Present</h2>
+      <div class="section-text">
+        <h3 class="section-sub-title" id="business-and-entrepreneurship">Business &amp; Entrepreneurship</h3>
+        <p class="section-paragraph">
+          During my FBP I tried to see failure not as a dead end, but as a potential opportunity (e.g. the pivot from
+          automation to collaboration), which fits the entrepreneurial mindset of being flexible and adapting for
+          success. The goal was to create a final product with a high level of quality. To do so, I went through an
+          iterative process resembling the lean methodology. A Build-Measure-Learn loop was applied, validating
+          assumptions with Minimal Viable Products (the smart watch and custom PCBs) before committing to professionally
+          manufactured PCBs. Making these professional PCBs also gave me insight into production costs, which is the
+          starting point for future development into a real product. Although Build-Measure-Learn was applied, market
+          validation remains the next loop to validate the potential of the product.
+        </p>
+        <p class="section-paragraph">
+          In my bachelor's, I followed various courses regarding business, which allow me to apply an entrepreneurial
+          mindset within a design process. I learned to create and apply theoretical models (such as the Business Model
+          Canvas, SWOT analysis, and Onion Mapping), the basics of IP rights, corporate culture, and approaches towards
+          futures thinking. I view entrepreneurship more as a mindset than a concrete business, allowing for flexibility
+          and the identification of opportunities.
+        </p>
+        <h3 class="section-sub-title" id="creativity-and-aesthetics">Creativity &amp; Aesthetics</h3>
+        <p class="section-paragraph">
+          Creativity showed itself in exploration, which was followed by thoughtful reframing. Early on, I expanded my
+          search rather than narrowing it, leading me to test different directions (physical samples, digital
+          exploration, and sketching). This eventually led to a reframing of my scope. Aesthetically, the design of the
+          hook was purposefully considered: it needed to be transparent, revealing its inner workings and signifying
+          that it is not just a hook. This form was refined through a method adapted from annotated portfolios [1], where
+          design decisions were written directly on the iterations. Creativity and aesthetics also extended into the
+          prototype itself, seeing AI as a starting point rather than taking its output as is.
+        </p>
+        <p class="section-paragraph">
+          As mentioned in my past, I followed the course Aesthetics of Interaction, which shifted my perspective from a
+          form-follows-function mindset to questioning the relationship between them and how they can be altered. I
+          often use my own creative judgement as a basis that can be explored and validated with scientific background
+          and user testing. This validating step, however, could have been done more thoroughly in my FBP process.
+        </p>
+        <h3 class="section-sub-title" id="math-data-and-computing">Math, Data &amp; Computing</h3>
+        <p class="section-paragraph">
+          Computational aspects were fundamental to my FBP because they translated the physical to the digital. Over the
+          past few years I built a deeper understanding of this expertise area, starting with simple data analytics and
+          eventually resulting in on-chip AI detection models that could recognize the stitches the user is making from
+          motion data. The methods and theory learned during my studies all combined in my FBP.
+        </p>
+        <p class="section-paragraph">
+          I applied the knowledge acquired from Making Sense of Sensors and Intelligent Interactive Products to analyze
+          sensor data, and I used the motion processing from Project 3 as a foundation to build on. The more theoretical
+          courses of Mechanical Engineering also helped, in the sense that I learned to adopt a mindset open towards
+          complex-seeming systems, dissecting them to comprehend how they work.
+        </p>
+        <h3 class="section-sub-title" id="technology-and-realization">Technology &amp; Realization</h3>
+        <p class="section-paragraph">
+          Realization is a method of materializing and testing my ideas in a physical reality. For my FBP I surpassed my
+          own expectations of what was thought to be possible. Creating a custom-assembled PCB was something I always
+          wanted to do, and the FBP offered a perfect opportunity for it. I learned valuable lessons about the
+          importance of thoroughly checking datasheets and dealing with failure, which called for flexibility and
+          creative solutions.
+        </p>
+        <p class="section-paragraph">
+          Courses like Creative Electronics and Creative Programming formed the basis on which I built my technology and
+          realization skills, but they were also driven by my own desire to create, as mentioned in my identity. My
+          internship at Interactive Matter also played a significant role in this, giving me more guidance in the
+          process of applying my realization skills.
+        </p>
+        <h3 class="section-sub-title" id="user-and-society">User &amp; Society</h3>
+        <p class="section-paragraph">
+          During my FBP I used user testing to challenge my assumptions. The iterative user testing on the software
+          highlighted pain points in my design that I would not have found myself. Looking at my design through a
+          first-person perspective clouded my view, since I knew the intentions behind the design decisions, which led
+          me to overlook the apparent complexity it initially carried. Ethical concerns also played an important role in
+          my design process, questioning the relationship between humans and technology and the moral aspects behind
+          training AI on human-created data.
+        </p>
+        <p class="section-paragraph">
+          The course User Centered Design provided me with the foundational knowledge of user studies. These skills were
+          later strengthened by my other projects, but mainly by Project 3, where through an ethnographic study a
+          third-person perspective was formed to analyze an artifact. Although this was not applied in my FBP, it would
+          be useful to validate it in my future work.
+        </p>
+        <h3 class="section-sub-title" id="design-and-research-process">Design &amp; Research Process</h3>
+        <p class="section-paragraph">
+          Through conducting my FBP, I gained a better understanding of how my personal design process works and is
+          applied. It has its foundation in RTDP [3], performing different design actions with moments of reflection in
+          between. Reflecting on this process, however, I realized that it could have been more explorative in the early
+          stages, rather than being dead set on a single goal. If this had been applied in my process, I would probably
+          have noticed the flaw in my scoping earlier and would have been able to explore more possibilities.
+        </p>
+      </div>
+    </section>
+    <section class="section">
+      <h2 class="section-title" id="sec-future">Future</h2>
+      <div class="section-text">
+        <p class="section-paragraph">
+          After this summer I will start my dual degree of Industrial Design and Mechanical Engineering (at the research
+          group of robotics) at TU/e, specifically focusing on the interaction between humans and autonomous systems. I
+          aspire to create safe, intelligent (soft) robotic systems that are built for collaboration and provide aid in
+          areas deemed too dangerous for human activity. To do so, I plan to improve my skills in design research
+          methods, more in-the-loop user testing, and creating aesthetic interactions for complex technological systems.
+        </p>
+      </div>
+    </section>
+    <section class="section">
+      <h2 class="section-title" id="sec-ai-acknowledgement">AI Acknowledgement</h2>
+      <div class="section-text">
+        <p class="section-paragraph--ai" data-lens>
+          Claude Opus 4.8 was used to help me tailor custom animations and interactions for this website using CSS and
+          JavaScript, such as the zoom mouse function illustrated here. The conversation can be found at this <a class="area-link" href="https://claude.ai/share/b8b35223-d058-4405-bb40-1e58ba4d18ce">link</a>.
+        </p>
+      </div>
+    </section>
+    <section class="section">
+      <h2 class="section-title" id="sec-references">References</h2>
+      <div class="section-text">
+        <ol class="references-list">
+          <li id="ref-1">Bill Gaver and John Bowers. 2012. Annotated portfolios. <em>Interactions</em> 19, 4: 40&ndash;49.
+            <a href="https://doi.org/10.1145/2212877.2212889">https://doi.org/10.1145/2212877.2212889</a>
+          </li>
+          <li id="ref-2">Jason Hickel and Giorgos Kallis. 2019. Is green growth possible? <em>New Political Economy</em> 25, 4: 469&ndash;486.
+            <a href="https://doi.org/10.1080/13563467.2019.1598964">https://doi.org/10.1080/13563467.2019.1598964</a>
+          </li>
+          <li id="ref-3">Caroline Hummels and Joep Frens. 2009. The reflective transformative design process. <em>CHI &rsquo;09 Extended Abstracts on Human Factors in Computing Systems</em>: 2655&ndash;2658.
+            <a href="https://doi.org/10.1145/1520340.1520376">https://doi.org/10.1145/1520340.1520376</a>
+          </li>
+          <li id="ref-4">Zachary C. Lipton. 2018. The mythos of model interpretability. <em>Communications of the ACM</em> 16, 10: 31&ndash;43.
+            <a href="https://doi.org/10.1145/3233231">https://doi.org/10.1145/3233231</a>
+          </li>
+          <li id="ref-5">Emma Strubell, Ananya Ganesh, and Andrew McCallum. 2019. Energy and policy considerations for deep learning in NLP. <em>Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics</em>: 3645&ndash;3650.
+            <a href="https://doi.org/10.18653/v1/p19-1355">https://doi.org/10.18653/v1/p19-1355</a>
+          </li>
+          <li id="ref-6">Peter-Paul Verbeek. 2006. Materializing morality. <em>Science Technology &amp; Human Values</em> 31, 3: 361&ndash;380.
+            <a href="https://doi.org/10.1177/0162243905285847">https://doi.org/10.1177/0162243905285847</a>
+          </li>
+        </ol>
+      </div>
+    </section>
+  </main>
+</body>
+<script src="app.js"></script>
+
+</html>

@@ -1,0 +1,408 @@
+@font-face {
+  font-family: Merriweather;
+  src: url(assets/fonts/Merriweather.ttf) format("truetype");
+  box-sizing: border-box;
+}
+@font-face {
+  font-family: Montserrat;
+  src: url(assets/fonts/Montserrat.ttf) format("truetype");
+}
+@font-face {
+  font-family: Space Mono;
+  src: url(assets/fonts/SpaceMono-Regular.ttf) format("truetype");
+}
+:root {
+  --serif-font: "Merriweather", Times, serif;
+  --sans-serif-font: "Montserrat", Helvetica, sans-serif;
+  --mono-font: "Space Mono", monospace;
+  --primary-color: #f9f6f0;
+  --secondary-color: #06090f;
+  --accent-1-color: #f5197f;
+  --accent-2-color: #ffd11a;
+  --accent-3-color: #1fbef0;
+  --column-pad: 40rem; /* horizontal padding of .section; gutters live here */
+  --img-gap: 1.5rem; /* space between image edge and the text column */
+  --fig-width: 20rem; /* width of a side figure */
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+html {
+  cursor: none;
+  color: var(--secondary-color);
+  background-color: var(--primary-color);
+  font-family: var(--sans-serif-font);
+  scroll-behavior: smooth;
+}
+.mouse {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 9000;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  padding: 0 5rem;
+  gap: 1rem;
+  background-color: var(--primary-color);
+  border-bottom: var(--secondary-color) 0.25rem solid;
+  cursor: none;
+}
+.nav-logo {
+  height: 4rem;
+  cursor: none;
+}
+.nav-home {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: var(--secondary-color);
+  cursor: none;
+}
+
+.nav-title {
+  font-family: var(--sans-serif-font);
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin-left: auto; /* push links to the right edge of the bar */
+  font-family: var(--sans-serif-font);
+}
+.nav-links a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  padding: 0.25rem 0.25rem;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: background-color 0.15s ease;
+  cursor: none;
+}
+.nav-links a:hover {
+  background-color: var(--accent-1-color);
+  color: var(--primary-color);
+}
+.landing {
+  position: relative;
+  padding: 0 5rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 80vh;
+  overflow: hidden;
+  justify-content: flex-end;
+  padding-bottom: 5rem;
+  border-bottom: #06090f 0.25rem solid;
+}
+.landing-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+.landing-content {
+  position: relative;
+  z-index: 1;
+  color: white;
+  mix-blend-mode: difference;
+}
+.landing-title {
+  font-size: 10rem;
+  font-family: var(--sans-serif-font);
+}
+.landing-sub-title {
+  font-size: 2rem;
+  font-family: var(--mono-font);
+}
+/* .landing-title,
+.landing-sub-title {
+  width: fit-content;
+  background-color: var(--accent-1-color);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0 0.25rem;
+} */
+.section {
+  padding: 1rem var(--column-pad) 0;
+  position: relative; /* positioning context for the gutter figures */
+}
+
+.section-title {
+  font-family: var(--sans-serif-font);
+  color: var(--primary-color);
+  background-color: var(--accent-1-color);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0.5rem 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  scroll-margin-top: 6rem; /* clear the sticky nav when jumped to */
+}
+
+.section-sub-title {
+  font-family: var(--sans-serif-font);
+  width: fit-content;
+  background-color: var(--accent-2-color);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0.25rem 0.25rem;
+  margin-bottom: 0.5rem;
+  scroll-margin-top: 5rem; /* clear the sticky nav when jumped to */
+}
+
+.section-text {
+  text-align: justify;
+  font-family: var(--serif-font);
+  margin-bottom: 2rem;
+}
+
+.section-text p {
+  margin-bottom: 1.5rem;
+}
+.section-text p:last-child {
+  margin-bottom: 0;
+}
+
+.section-paragraph--ai {
+  text-align: justify;
+  font-family: var(--serif-font);
+  background-color: var(--primary-color);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0;
+  margin-bottom: 0.5rem;
+  width: fit-content;
+}
+
+.lens {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9998;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+  overflow: hidden;
+  will-change: transform, width, height;
+
+  box-shadow:
+    inset 0 0 14px rgba(255, 255, 255, 0.45),
+    inset 0 0 2px rgba(255, 255, 255, 0.9),
+    0 6px 20px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.lens-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+}
+
+.lens::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(0.4px) saturate(1.25) url(#lens-refraction);
+  backdrop-filter: blur(0.4px) saturate(1.25) url(#lens-refraction);
+  /* background: radial-gradient(
+    circle at 32% 28%,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.06) 30%,
+    rgba(255, 255, 255, 0) 58%
+  ); */
+}
+
+/* JS sets each figure's `top` to align with its anchor element and stacks
+   figures that share a side. Horizontal placement is pure CSS below. */
+.side-fig {
+  position: absolute;
+  width: var(--fig-width);
+  margin: 0;
+}
+/* Left gutter: anchor by the figure's right edge to the column's left edge. */
+.side-fig[data-side="left"] {
+  right: calc(100% - var(--column-pad) + var(--img-gap));
+}
+/* Right gutter: anchor the figure's left edge to the column's right edge. */
+.side-fig[data-side="right"] {
+  left: calc(100% - var(--column-pad) + var(--img-gap));
+}
+ 
+/* Slider: fixed-height box; slides stack and crossfade. */
+.side-slider {
+  position: relative;
+  width: 100%;
+  height: 20rem;
+  border: 0.15rem solid var(--secondary-color);
+  overflow: hidden;
+}
+ 
+.side-img {
+  width: 100%;
+  height: 20rem;
+  object-fit: cover;
+  display: block;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--accent-3-color) 0 12px,
+    var(--primary-color) 12px 24px
+  );
+}
+ 
+/* Each slide fills the slider and fades in/out. */
+.slide {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  border: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.slide.active {
+  opacity: 1;
+}
+/* Placeholder tint variants so the slides look different. */
+.slide-b {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--accent-1-color) 0 12px,
+    var(--primary-color) 12px 24px
+  );
+}
+.slide-c {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--accent-2-color) 0 12px,
+    var(--primary-color) 12px 24px
+  );
+}
+ 
+/* Navigation dots below the slider. */
+.slider-dots {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+.slider-dots button {
+  width: 0.6rem;
+  height: 0.6rem;
+  padding: 0;
+  border: 0.1rem solid var(--secondary-color);
+  border-radius: 50%;
+  background: transparent;
+  cursor: none;
+}
+.slider-dots button.active {
+  background: var(--secondary-color);
+}
+ 
+.side-fig figcaption {
+  font-family: var(--mono-font);
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  color: var(--secondary-color);
+  /* captions are normal flow text — they must NOT trigger the lens, so they
+     simply carry no data-lens attribute. */
+}
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000; /* above everything, including the cursor canvas */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  /* Fade the whole overlay out after the colors have filled in. */
+  animation: loader-fade 0.6s ease 4s forwards;
+}
+.loader-logo {
+  width: 14rem;
+  height: 14rem;
+  opacity: 0;
+  animation: logo-fade-in 1s ease forwards;
+}
+ 
+@keyframes logo-fade-in {
+  to { opacity: 1; }
+}
+ 
+/* Each colored path starts as the background color (invisible against the
+   logo's empty state) and animates to its accent colour, one after another.
+   Delays start at 1s so the colours fill only after the logo has faded in. */
+.logo-magenta {
+  fill: var(--primary-color);
+  animation: fill-magenta 0.8s ease 1.3s forwards;
+}
+.logo-cyan {
+  fill: var(--primary-color);
+  animation: fill-cyan 0.8s ease 2.1s forwards;
+}
+.logo-yellow {
+  fill: var(--primary-color);
+  animation: fill-yellow 0.8s ease 2.9s forwards;
+}
+ 
+@keyframes fill-magenta {
+  to { fill: var(--accent-1-color); }
+}
+@keyframes fill-cyan {
+  to { fill: var(--accent-3-color); }
+}
+@keyframes fill-yellow {
+  to { fill: var(--accent-2-color); }
+}
+ 
+@keyframes loader-fade {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+ 
+/* When JS adds this class (after the animation), the loader is gone for good. */
+.loader.done {
+  display: none;
+}
+ 
+
+/* Numbered reference list in the References section. */
+.references-list {
+  list-style-position: outside;
+  padding-left: 1.5rem;
+}
+.references-list li {
+  margin-bottom: 1rem;
+  scroll-margin-top: 6rem; /* clear the sticky nav if linked to */
+}
+.references-list li:last-child {
+  margin-bottom: 0;
+}
+.references-list a,
+.area-link {
+  color: var(--accent-3-color);
+  text-decoration: underline;
+  word-break: break-word;
+  cursor: none;
+}
+.references-list a:hover,
+.area-link:hover {
+  background-color: var(--accent-3-color);
+  color: var(--primary-color);
+}
