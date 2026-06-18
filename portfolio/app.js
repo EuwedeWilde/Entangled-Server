@@ -134,6 +134,12 @@ if (document.fonts && document.fonts.ready) {
 // ---- Image sliders: auto-advance + clickable dots ----
 function initSliders() {
   const sliders = document.querySelectorAll(".side-slider");
+  // Each advance waits a random delay in this range, so no two sliders — and
+  // no two image changes — ever land on the same rhythm.
+  const MIN_DELAY = 2500; // ms
+  const MAX_DELAY = 6500; // ms
+  const randomDelay = () =>
+    MIN_DELAY + Math.random() * (MAX_DELAY - MIN_DELAY);
   sliders.forEach((slider) => {
     const slides = Array.from(slider.querySelectorAll(".slide"));
     if (slides.length <= 1) return; // nothing to slide
@@ -153,7 +159,7 @@ function initSliders() {
         if (i === current) dot.classList.add("active");
         dot.addEventListener("click", () => {
           show(i);
-          restartTimer(); // reset the auto-advance after manual control
+          scheduleNext(); // resume with a fresh random delay after manual pick
         });
         dotsBox.appendChild(dot);
         dots.push(dot);
@@ -173,12 +179,19 @@ function initSliders() {
       }
     }
  
+    // Self-scheduling loop: after each advance, pick a brand-new random delay
+    // for the next one. This makes every individual image change happen at an
+    // unpredictable time rather than on a fixed beat.
     let timer = null;
-    function restartTimer() {
-      clearInterval(timer);
-      timer = setInterval(() => show(current + 1), 4000);
+    function scheduleNext() {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        show(current + 1);
+        scheduleNext(); // queue the following change with a fresh random delay
+      }, randomDelay());
     }
-    restartTimer();
+    // Kick things off; every slider gets its own random first delay too.
+    scheduleNext();
   });
 }
 window.addEventListener("load", initSliders);
