@@ -23,6 +23,7 @@
   --column-pad: 40rem; /* horizontal padding of .section; gutters live here */
   --img-gap: 1.5rem; /* space between image edge and the text column */
   --fig-width: 20rem; /* width of a side figure */
+  --nav-pad: 5rem; /* horizontal padding of nav + landing */
 }
 
 * {
@@ -51,7 +52,7 @@ html {
   height: 5rem;
   display: flex;
   align-items: center;
-  padding: 0 5rem;
+  padding: 0 var(--nav-pad);
   gap: 1rem;
   background-color: var(--primary-color);
   border-bottom: var(--secondary-color) 0.25rem solid;
@@ -95,7 +96,7 @@ html {
 }
 .landing {
   position: relative;
-  padding: 0 5rem;
+  padding: 0 var(--nav-pad);
   display: flex;
   flex-direction: column;
   min-height: 80vh;
@@ -120,11 +121,13 @@ html {
   mix-blend-mode: difference;
 }
 .landing-title {
-  font-size: 10rem;
+  font-size: clamp(2.75rem, 12vw, 10rem);
+  line-height: 1.05;
   font-family: var(--sans-serif-font);
+  overflow-wrap: break-word;
 }
 .landing-sub-title {
-  font-size: 2rem;
+  font-size: clamp(1rem, 3.5vw, 2rem);
   font-family: var(--mono-font);
 }
 /* .landing-title,
@@ -405,4 +408,156 @@ html {
 .area-link:hover {
   background-color: var(--accent-3-color);
   color: var(--primary-color);
+}
+/* ===========================================================================
+   RESPONSIVE LAYOUT
+   ---------------------------------------------------------------------------
+   The base layout assumes a very wide viewport: a narrow centred text column
+   flanked by two large gutters (--column-pad) where the .side-fig figures are
+   absolutely positioned. As the viewport narrows we (1) shrink the gutters so
+   the text column stays comfortable, then (2) below the figure breakpoint we
+   abandon the gutter model entirely and fold the figures back into normal
+   document flow. JS (layoutSideFigures) only runs its absolute positioning
+   above that same breakpoint — see app.js.
+   ========================================================================= */
+
+/* Wide desktops: ease the gutters in from the 40rem base. */
+@media (max-width: 1600px) {
+  :root {
+    --column-pad: clamp(6rem, 28vw, 40rem);
+  }
+}
+
+/* Laptops / small desktops: tighten nav + landing padding too. */
+@media (max-width: 1100px) {
+  :root {
+    --nav-pad: 2.5rem;
+  }
+  .nav {
+    padding: 0 var(--nav-pad);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   FIGURE BREAKPOINT (1024px)
+   Below this the side gutters are too small to hold a 20rem figure, so the
+   figures rejoin the text flow. JS skips its absolute top/left positioning
+   here, so we must reset the inline styles it would otherwise leave behind.
+   ------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  :root {
+    --column-pad: 2.5rem;
+  }
+
+  .side-fig {
+    position: static !important; /* override JS-applied absolute positioning */
+    top: auto !important;
+    left: auto;
+    right: auto;
+    width: 100%;
+    max-width: 28rem;
+    /* Space above so it sits clearly below its anchor paragraph, not crammed. */
+    margin: 1.5rem auto 2.5rem; /* centre the figure in the column */
+  }
+  /* Side no longer means a gutter; clear the horizontal anchors. */
+  .side-fig[data-side="left"],
+  .side-fig[data-side="right"] {
+    left: auto;
+    right: auto;
+  }
+
+  /* Keep the image area square regardless of column width. The base layout
+     uses fixed heights; override with a 1:1 aspect ratio so width drives it. */
+  .side-slider,
+  .side-img,
+  .slide {
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+}
+
+/* Tablets / large phones. */
+@media (max-width: 768px) {
+  :root {
+    --nav-pad: 1.25rem;
+    --column-pad: 1.5rem;
+  }
+
+  .nav {
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.75rem var(--nav-pad);
+    gap: 0.5rem;
+  }
+  .nav-home {
+    justify-content: center;
+  }
+  .nav-logo {
+    height: 2.75rem;
+  }
+  .nav-title {
+    font-size: 1.25rem;
+  }
+  .nav-links {
+    margin-left: 0; /* was auto (right-push); center instead when stacked */
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+  }
+
+  .landing {
+    min-height: 70vh;
+    padding-bottom: 2.5rem;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+  }
+}
+
+/* Small phones. */
+@media (max-width: 480px) {
+  .nav-links {
+    margin-left: 0;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+  .nav-title {
+    font-size: 1.1rem;
+  }
+
+  .side-fig {
+    max-width: 100%;
+  }
+
+  .section-title {
+    font-size: 1.35rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   TOUCH / NO-HOVER DEVICES
+   The custom cursor, magnifying lens and hidden system cursor all depend on a
+   mouse. On touch devices there is no pointer to drive them, so restore the
+   native cursor and hide the bespoke cursor canvas + lens.
+   ------------------------------------------------------------------------- */
+@media (hover: none), (pointer: coarse) {
+  html,
+  .nav,
+  .nav-logo,
+  .nav-home,
+  .nav-links a,
+  .references-list a,
+  .area-link,
+  .slider-dots button {
+    cursor: auto;
+  }
+  .mouse,
+  .lens {
+    display: none !important;
+  }
 }

@@ -54,8 +54,46 @@ window.addEventListener("resize", buildLensContent);
 // Each .side-fig is absolutely positioned inside its .section. We set its top
 // to align with the anchor element (data-anchor -> element id). If two figures
 // on the same side+section would overlap, the later one is pushed down.
+const GUTTER_BREAKPOINT = 1024;
+
+// Remember where each figure originally sits in the DOM (its parent + the
+// sibling it came before) so we can restore it when switching back to the
+// wide gutter layout. Captured once, before anything moves.
+const figHomes = new Map();
+document.querySelectorAll(".side-fig").forEach((fig) => {
+  figHomes.set(fig, { parent: fig.parentNode, nextSibling: fig.nextSibling });
+});
+
 function layoutSideFigures() {
   const figs = Array.from(document.querySelectorAll(".side-fig"));
+
+  // Below the figure breakpoint the figures fold into normal flow (see the
+  // matching @media rule in main.css). We physically move each figure to sit
+  // directly AFTER its anchor paragraph so it reads as belonging to that text,
+  // clear any inline `top` left over from the wide layout, and let CSS handle
+  // the rest.
+  if (window.innerWidth <= GUTTER_BREAKPOINT) {
+    figs.forEach((fig) => {
+      fig.style.top = "";
+      const anchorId = fig.getAttribute("data-anchor");
+      const anchor = anchorId ? document.getElementById(anchorId) : null;
+      if (anchor && anchor.parentNode) {
+        // Insert the figure right after its anchor element.
+        anchor.parentNode.insertBefore(fig, anchor.nextSibling);
+      }
+    });
+    return;
+  }
+
+  // Wide layout: make sure each figure is back in its original DOM home before
+  // we position it absolutely in the gutter.
+  figs.forEach((fig) => {
+    const home = figHomes.get(fig);
+    if (home && fig.parentNode !== home.parent) {
+      home.parent.insertBefore(fig, home.nextSibling);
+    }
+  });
+
   const lowestBySideKey = new Map(); // key: section+side -> lowest occupied y
   const gap = 16; // px gap between stacked figures on the same side
   let sectionCounter = 0;
